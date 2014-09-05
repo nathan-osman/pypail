@@ -3,10 +3,14 @@ class Account(object):
     A Digital Ocean Account.
     """
 
-    def __init__(self, access_token):
+    def __init__(self, **kwargs):
         """
-        Initialize the account with the specified access token.
+        Initialize the account with the specified data.
 
-        :param access_token: the access token for the account
+        This method accepts data either directly returned by completing the
+        authorization code flow or using a stored access token.
+
+        :param **kwargs: authentication data retrieved from the API
         """
-        self._access_token = access_token
+        self.access_token = kwargs.get('access_token', None)
+        self.refresh_token = kwargs.get('refresh_token', None)

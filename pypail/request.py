@@ -1,6 +1,6 @@
 from requests import request, Request, RequestException
 
-from .exceptions import ConnectionError, MalformedResponseError
+from .exceptions import APIError, ConnectionError, ResponseError
 
 
 def build_url(domain, path, params={}):
@@ -25,8 +25,11 @@ def send_request(method, domain, path, params={}):
     :return: the HTTP response or None
     """
     try:
-        return request(method, 'https://%s%s' % (domain, path), params=params).json()
+        data = request(method, 'https://%s%s' % (domain, path), params=params).json()
     except RequestException:
         raise ConnectionError()
     except ValueError:
-        raise MalformedResponseError()
+        raise ResponseError()
+    if 'error' in data:
+        raise APIError(data.get('error_description'), 'unknown API error')
+    return data
