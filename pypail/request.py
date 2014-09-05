@@ -1,37 +1,32 @@
-from urllib import quote
-from urllib2 import URLError, urlopen
+from requests import request, Request, RequestException
+
+from .exceptions import ConnectionError, MalformedResponseError
 
 
-class Request(object):
+def build_url(domain, path, params={}):
     """
-    Methods for interacting with the Digital Ocean API.
+    Build a URL from its components.
+
+    :param domain: the domain name for the request
+    :param path: the path for the request
+    :param params: zero or more query string parameters
+    :return: the described URL
     """
+    return Request('GET', 'https://%s%s' % (domain, path), params=params).prepare().url
 
-    @classmethod
-    def build_url(cls, domain, path, params={}):
-        """
-        Build a URL from its components.
 
-        :param domain: the domain name for the request
-        :param path: the path for the request
-        :param params: zero or more query string parameters
-        :return: the described URL
-        """
-        return 'https://%s%s%s%s' % (domain, path, '?' if params else '', quote(params))
+def send_request(method, domain, path, params={}):
+    """
+    Send an HTTP request.
 
-    @classmethod
-    def send_request(cls, domain, path, params={}):
-        """
-        Send an HTTP request.
-
-        :param domain: the domain name for the request
-        :param path: the path for the request
-        :param params: zero or more query string parameters
-        :return: the HTTP response or None
-        """
-        try:
-            data = urlopen(cls.build_url(domain, path, params)).read()
-        except URLError:
-            return None
-        else:
-            return data
+    :param domain: the domain name for the request
+    :param path: the path for the request
+    :param params: zero or more query string parameters
+    :return: the HTTP response or None
+    """
+    try:
+        return request(method, 'https://%s%s' % (domain, path), params=params).json()
+    except RequestException:
+        raise ConnectionError()
+    except ValueError:
+        raise MalformedResponseError()
