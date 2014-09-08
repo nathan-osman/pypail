@@ -15,8 +15,8 @@ def _request(*args, **kwargs):
     Issue a request and return the response as JSON.
     """
     data = request(*args, **kwargs).json()
-    if 'error' in data:
-        raise APIError(data.get('error_description'), 'unknown API error')
+    if 'id' in data:
+        raise APIError(data.get('message', 'unknown API error'))
     return data
 
 
@@ -42,7 +42,12 @@ class Credentials(object):
         :param **kwargs: any additional parameters for request
         :return: the response as JSON
         """
-        return _request(method or 'GET', 'https://api.digitalocean.com/v2%s' % endpoint, **kwargs)
+        return _request(
+            method or 'GET',
+            'https://api.digitalocean.com/v2%s' % endpoint,
+            headers={'Authorization': 'Bearer %s' % self.data['access_token']},
+            **kwargs
+        )
 
 
 def begin(client_id, redirect_uri, scope=READ):
