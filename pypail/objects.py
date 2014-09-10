@@ -10,7 +10,7 @@ class Object(object):
     objects contain an embedded Region, which contains one or more Sizes.
     """
 
-    _SPECIAL = {}  # derived classes override these
+    _SPECIAL = {}  # derived classes override this
 
     def __init__(self, credentials, data=None):
         self._credentials, self._data = credentials, data
@@ -75,6 +75,7 @@ class Action(Object):
 
 
 class Backup(Object):
+
     pass
 
 
