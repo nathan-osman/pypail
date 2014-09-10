@@ -4,7 +4,9 @@ pypail is a lightweight Python package that simplifies access to the Digital Oce
 
 ### Installation
 
-[TODO]
+You can install pypail directly from PyPI
+
+    pip install pypail
 
 ### Authentication
 
