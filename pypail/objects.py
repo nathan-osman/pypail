@@ -136,7 +136,9 @@ class Size(Object):
 
 class Snapshot(Object):
 
-    pass
+    _SPECIAL = {
+        'regions': lambda x: x._filter('/regions', Region, 'regions', lambda y: y.slug in x._data['regions']),
+    }
 
 
 class SSHKey(Object):
