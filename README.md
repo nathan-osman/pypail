@@ -1,5 +1,9 @@
 ## pypail - Python Digital Ocean Client
 
+[![PyPI Version](http://img.shields.io/pypi/v/pypail.svg)](https://pypi.python.org/pypi/pypail)
+[![PyPI Downloads](http://img.shields.io/pypi/dm/pypail.svg)](https://pypi.python.org/pypi/pypail)
+[![License](http://img.shields.io/badge/license-MIT-red.svg)](http://opensource.org/licenses/MIT)
+
 pypail is a lightweight Python package that simplifies access to the Digital Ocean API.
 
 ### Installation
